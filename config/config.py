@@ -1,4 +1,4 @@
-# VK Group id
+# VK Group id (without a minus sign)
 group_id = 224130500
 
 # Post templates
