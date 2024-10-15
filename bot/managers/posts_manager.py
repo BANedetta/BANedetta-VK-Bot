@@ -12,6 +12,6 @@ async def create_post(data: dict) -> int:
 	response = await vk.send_api_request("wall.post", params)
 	return response["post_id"]
 
-async def edit_post(status: str, data: dict):
-	params = await __get_ready_post_params(data, config.post_templates[status]) | {"post_id": data["vk_post"]}
+async def edit_post(data: dict):
+	params = await __get_ready_post_params(data, config.post_templates[data["status"]]) | {"post_id": data["vk_post"]}
 	await vk.send_api_request("wall.edit", params)
