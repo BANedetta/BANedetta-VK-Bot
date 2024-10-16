@@ -4,27 +4,15 @@ from main import vk, config, db
 
 async def longpolling():
 	longpoll = BotsLongPoll(vk, config.group_id)
+	statuses = {"+": "confirmed", "-": "denied"}
 
 	async for event in longpoll.iter():
-		statuses = {
-			"+": "confirmed",
-			"-": "denied"
-		}
-		object = event["object"]
-
-		if (
-			event["type"] != "wall_reply_new" or
-			not object["from_id"] in config.users
-		):
+		if event["type"] != "wall_reply_new" or event["object"]["from_id"] not in config.users:
 			continue
 
-		if data := await db.get_data_by_post_id("vk", object["post_id"]):
-			if (status := data["status"]) == "waiting":
-				match status := statuses.get(object["text"]):
-					case "confirmed": await db.confirm(data["id"])
-					case "denied": await db.deny(data["id"])
-					case _: continue
-
-			data["status"] = status
-			await posts_manager.edit_post(data)
-			await db.update_post_id("vk", -1, data["id"])
+		if data := await db.get_data_by_post_id("vk", event["object"]["post_id"]):
+			if data["status"] == "waiting" and (status := statuses.get(event["object"]["text"])):
+				await (db.confirm if status == "confirmed" else db.deny)(data["id"])
+				data["status"] = status
+				await posts_manager.edit_post(data)
+				await db.update_post_id("vk", -1, data["id"])
