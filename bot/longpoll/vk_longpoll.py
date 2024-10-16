@@ -12,7 +12,10 @@ async def longpolling():
 		}
 		object = event["object"]
 
-		if (event["type"] != "wall_reply_new"):
+		if (
+			event["type"] != "wall_reply_new" or
+			not object["from_id"] in config.users
+		):
 			continue
 
 		if data := await db.get_data_by_post_id("vk", object["post_id"]):

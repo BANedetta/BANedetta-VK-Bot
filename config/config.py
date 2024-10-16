@@ -1,6 +1,9 @@
 # VK Group id (without a minus sign)
 group_id = 224130500
 
+# User IDs capable of deciding the fate of bans
+users = [614763437]
+
 # Post templates
 post_templates = {
 	"waiting": {
