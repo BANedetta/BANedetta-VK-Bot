@@ -7,7 +7,7 @@ users = [614763437]
 # Post templates
 post_templates = {
 	"waiting": {
-		"attachments": "photo-224130500_457239036",
+		"attachments": "photo-224130500_457239036", # Any file from Vkontakte servers
 		"post": """
 Игрок {banned} был заблокирован игроком {by}.
 Причина: {reason}.
