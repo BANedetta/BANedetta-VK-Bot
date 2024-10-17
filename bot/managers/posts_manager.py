@@ -2,6 +2,7 @@ from main import vk, config
 
 async def _get_params(data: dict, post_config: dict) -> dict:
 	return {
+		"from_group": 1,
 		"owner_id": -config.group_id,
 		"attachments": post_config["attachments"],
 		"message": post_config["post"].format(banned = data["banned"], by = data["by"], reason = data["reason"])
