@@ -1,6 +1,6 @@
 from main import vk, config
 
-async def __get_ready_post_params(data: dict, post_config: dict) -> dict:
+async def _get_params(data: dict, post_config: dict) -> dict:
 	return {
 		"owner_id": -config.group_id,
 		"attachments": post_config["attachments"],
@@ -8,10 +8,10 @@ async def __get_ready_post_params(data: dict, post_config: dict) -> dict:
 	}
 
 async def create_post(data: dict) -> int:
-	params = await __get_ready_post_params(data, config.post_templates["waiting"])
+	params = await _get_params(data, config.post_templates["waiting"])
 	response = await vk.send_api_request("wall.post", params)
 	return response["post_id"]
 
 async def edit_post(data: dict):
-	params = await __get_ready_post_params(data, config.post_templates[data["status"]]) | {"post_id": data["vk_post"]}
+	params = await _get_params(data, config.post_templates[data["status"]]) | {"post_id": data["vk_post"]}
 	await vk.send_api_request("wall.edit", params)
